@@ -1,0 +1,320 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Hanssori!</title>
+
+     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<!-- 아이콘 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="{% static 'gugak/styles.css' %}">
+<script src="{% static 'gugak/script.js' %}"></script>
+<script src="{% static 'gugak/modal.js' %}"></script>
+<script src="{% static 'gugak/custom.js' %}"></script>
+  </head>
+
+  <body>
+    
+    <!-- 상단 메뉴 -->
+    <nav>
+        <ul class="topnav" id="myTopnav">
+        <li class="logo"><a href="/"><img src="{% static 'gugak/hanssori.png' %}"></a></li>
+        <li><a href="#" class="menu-itm" onclick="goToPlaylistFromRecent(); return false;">Playlists</a></li>
+        <li><a class="menu-itm" href="https://www.youtube.com/@gugak1951" target="_blank">YouTube Channel</a></li>
+        <li><a class="menu-itm" target="_blank" href="https://archive.gugak.go.kr/portal/main">Archive</a></li>
+        <li><a class="menu-itm" target="_blank" href="https://www.gugak.go.kr/site/main/index001">Center</a></li>
+        <li><a class="menu-itm" href="/">About</a></li>
+        <li><a class="menu-itm" href="/"><i class="fa fa-search" aria-hidden="true"></i></a></li>
+        
+        </ul>
+    </nav>    
+    <div id="header-container">
+        <div class="header-title container">
+            <form role="form" name="search" action="{% url 'recommend_view' %}" method="get">
+                <button type="submit" id="search-btn" class="btn">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+                <div id="search-top">
+                    <input type="text" class="form-control" id="search" name="query" placeholder="예: 신나는 가야금 노래 듣고싶어">
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- 배경색 -->
+        <div class="header" style="background-image: url('https://birpalbumart.s3.amazonaws.com/albumart/may2025.jpg')">
+        </div>
+    </div>
+    <div class="container main-content no-top-margin">
+        <div id="sidebar">
+	<div id="social-buttons">
+		<a href="https://x.com/eunao_o" target="_blank">
+			<div class="social-button twitter-btn">
+				<i class="fa fa-twitter" aria-hidden="true"></i>
+			</div>
+		</a>
+		<a href="https://www.facebook.com/profile.php?id=100008796194189&locale=ko_KR" target="_blank">
+			<div class="social-button facebook-btn">
+				<i class="fa fa-facebook" aria-hidden="true"></i>
+			</div>
+		</a>
+		<a href="https://www.instagram.com/xeuvoxo/" target="_blank">
+			<div class="social-button instagram-btn">
+				<i class="fa fa-instagram" aria-hidden="true"></i>
+			</div>
+		</a>
+		<a href="https://soundcloud.com/malmusic/sets/set" target="_blank">
+			<div class="social-button soundcloud-btn">
+				<i class="fa fa-soundcloud" aria-hidden="true"></i>
+			</div>
+		</a>
+		<a href="https://www.youtube.com/@gugak1951" target="_blank">
+			<div class="social-button youtube-btn">
+				<i class="fa fa-youtube" aria-hidden="true"></i>
+			</div>
+		</a>
+	</div>
+		<div class="submithub">
+			최근 들은 노래
+		</div>
+    <div class="sidebar-ad">
+        <ul id="recent-list"></ul>
+    </div>
+	<div id="wavo">
+		<div id="wb-ad-grid"></div>
+	</div>
+	<script>
+		var wb = window.wb || (window.wb = {});
+		wb.q || (wb.q = []);
+		wb.q.push(['addGrid', {siteId: '751981', id : "wb-ad-grid"}])
+	</script>
+	<script async src='https://d362g9pp4yoj7y.cloudfront.net/'></script>
+</div>        <div id="main">
+            <h2 class="more no-top-margin"><a href="/">추천 결과</a></h2>
+            <div>
+
+                {% if results %}
+                <div class="playlist-grid">
+                    {% for song in results %}
+                        <div class="card" data-title="{{ song.title }}">
+                            <p>🎵 {{ song.title }}</p>
+                            <audio controls data-filename="{{ song.filename }}">
+                                <source src="{% static 'music/' %}{{ song.filename }}" type="audio/wav">
+                                브라우저가 오디오 태그를 지원하지 않습니다.
+                            </audio>
+                            <br>
+                            <a href="{% static 'music/' %}{{ song.filename }}" download>🔽 다운로드</a>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+        </div>
+        <div id="fap"></div>
+    </div><!-- /.container -->
+    <div class="footer">
+
+	©Hanssori! 2025 (Korean Music: Gugak playlist)
+	<br>
+	<div id="footer-social">
+		<a class="social-btn" href="https://www.facebook.com/profile.php?id=100008796194189&locale=ko_KR" target="_blank"><i class="fa fa-facebook-square" aria-hidden="true"></i></a>
+		<a class="social-btn" href="https://x.com/eunao_o" target="_blank"><i class="fa fa-twitter-square" aria-hidden="true"></i></a>
+		<a class="social-btn" href="https://www.instagram.com/xeuvoxo/" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+	</div>
+</div>
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const recentList = document.getElementById("recent-list");
+
+    // ▶ localStorage에서 불러와서 최근 들은 노래 목록 표시
+    const savedTracks = JSON.parse(localStorage.getItem("recentTracks")) || [];
+    savedTracks.forEach(track => {
+        const li = document.createElement("li");
+        li.textContent = track.title;
+        recentList.appendChild(li);
+    });
+
+    // 🎵 곡이 재생되면 localStorage에 저장 + 리스트 최신화
+    document.querySelectorAll("audio").forEach(audio => {
+        audio.addEventListener("play", function () {
+            const title = this.closest(".card").dataset.title;
+            const filename = this.dataset.filename;
+
+            let tracks = JSON.parse(localStorage.getItem("recentTracks")) || [];
+
+            // 중복 제거
+            tracks = tracks.filter(t => t.filename !== filename);
+            tracks.unshift({ title, filename });
+
+            // 최대 5곡만 유지
+            tracks = tracks.slice(0, 5);
+            localStorage.setItem("recentTracks", JSON.stringify(tracks));
+
+            // 🆕 DOM도 다시 그려줌
+            recentList.innerHTML = "";
+            tracks.forEach(track => {
+                const li = document.createElement("li");
+                li.textContent = track.title;
+                recentList.appendChild(li);
+            });
+        });
+    });
+});
+</script>
+
+<script>
+  // 최근 들은 곡 기반으로 /playlist/로 이동
+  function goToPlaylistFromRecent() {
+    const tracks = localStorage.getItem("recentTracks");
+    if (tracks) {
+      const url = new URL(window.location.origin + "/playlist/");
+      url.searchParams.set("recent", tracks);
+      window.location.href = url.toString();
+    } else {
+      alert("최근 들은 곡이 없습니다.");
+    }
+  }
+</script>
+
+
+<style>
+.card {
+  background-color: #fff;
+  border: 1px solid #eee;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 8px;
+}
+audio {
+  width: 100%;  /* 플레이어 너비 통일 */
+}
+.playlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* The Modal (background) */
+#kickstartModal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.kickstartmodal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 650px;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
+
+
+<script>
+// Get the modal
+var kickstartModal = document.getElementById('kickstartModal');
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+if (document.cookie.indexOf('visited=true') == -1){
+    kickstartModal.style.display = "block";
+}
+
+$("#clickks").click(function(){
+	kickstartModal.style.display = "none";
+})
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    kickstartModal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == kickstartModal) {
+        kickstartModal.style.display = "none";
+    }
+}
+
+var day = 1000*60*60*24;
+var expires = new Date((new Date()).valueOf() + day);
+document.cookie = "visited=true;expires=" + expires.toUTCString();
+</script>
+
+
+<div id="player">
+	<div class="container">
+		<div id="controls">
+			<i class="fa fa-fast-backward" aria-hidden="true"></i>
+			<i id ="playbtn" class="fa fa-play" aria-hidden="true"></i>
+			<i class="fa fa-fast-forward" aria-hidden="true"></i>
+		</div>
+		<div id="player-meta">
+			<div id="player-title">
+				<span id="track-title">&nbsp;</span>
+			</div>
+			<div id="playerbar">
+				<div class="loadcontainer">
+					<div class="loadprogress">
+					</div>
+				</div>
+				<div id="playerprogress">
+				</div>
+			</div>
+			<i class="fa fa-volume-up vol-speaker" aria-hidden="true"></i>
+			<div id="playervolume">
+				<div id="currentvolume">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-10566175-1', 'auto');
+  ga('send', 'pageview');
+
+</script>    
+  </body>
+</html>
